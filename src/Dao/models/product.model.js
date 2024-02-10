@@ -33,9 +33,6 @@ const ProductSchema =new mongoose.Schema({
     type:Boolean,
     required: true
  },
- thumbnails:{
-    type: [String]
- }
 })
 const ProductModels = mongoose.model("products", ProductSchema)
  

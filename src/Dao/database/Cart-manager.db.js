@@ -13,25 +13,27 @@ class CartManager {
   }
   async getCartById(cartId) {
     try {
-      const cart = await CartModels.findById(cartId);
-      if (!cart) {
-        console.log("No existe ese carrito ");
-        return null;
-      }
+        const cart = await CartModels.findById(cartId);
+        if (!cart) {
+            console.log("No existe ese carrito");
+            return { status: 404, message: "No existe ese carrito" };
+        }
+        return { status: 200, cart };
     } catch (error) {
-      console.log("error al traer el carrito");
+        console.log("error al traer el carrito");
+        return { status: 500, message: "Error interno del servidor" };
     }
-  }
-  async productsAddToCarts(cartId, productId, quantity = 1) {
-    try {
-      const cart = await this.getCartById(cartId);
-  
-      // Verificar si el carrito existe y tiene la propiedad products
-      if (!cart || !cart.products) {
-        console.log("Error: El carrito no existe o no tiene la propiedad 'products'");
-        return null;
-      }
-  
+}
+ async productsAddToCarts(cartId, productId, quantity = 1) {
+   try {
+     const cart = await this.getCartById(cartId);
+ 
+     // Verificar si el carrito existe y tiene la propiedad products
+     if (!cart || !cart.products) {
+       console.log("Error: El carrito no existe o no tiene la propiedad 'products'");
+       return null;
+     }
+ 
       // Verificar si el producto ya existe en el carrito
       const productExistIndex = cart.products.findIndex(
         (item) => item.product && item.product.toString() === productId
